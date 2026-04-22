@@ -48,7 +48,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/customization" element={<Customization />} />
           
-          {/* Admin Routes */}
+          {/* Admin Routes - Make sure these are EXACTLY as written */}
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/products" element={<AdminProducts />} />

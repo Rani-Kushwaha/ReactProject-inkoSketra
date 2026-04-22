@@ -11,7 +11,6 @@ export const AdminProvider = ({ children }) => {
   const [creators, setCreators] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
   const [orders, setOrders] = useState([]);
-  const [pendingApprovals, setPendingApprovals] = useState([]);
 
   // Load data from localStorage on mount
   useEffect(() => {
@@ -82,7 +81,7 @@ export const AdminProvider = ({ children }) => {
     return newCreator;
   };
 
-  // Update Creator Status (Approve/Reject)
+  // Update Creator Status
   const updateCreatorStatus = (creatorId, status) => {
     const updated = creators.map(creator =>
       creator.id === creatorId ? { ...creator, status } : creator
@@ -100,7 +99,7 @@ export const AdminProvider = ({ children }) => {
     toast.success("Creator removed");
   };
 
-  // Add Product (by Admin or Creator)
+  // Add Product
   const addProduct = (product, creatorId = null) => {
     const newProduct = {
       id: Date.now(),
@@ -140,7 +139,7 @@ export const AdminProvider = ({ children }) => {
     toast.success("Product deleted!");
   };
 
-  // Approve Product (for creator submissions)
+  // Approve Product
   const approveProduct = (productId) => {
     const updated = allProducts.map(product =>
       product.id === productId ? { ...product, status: "approved" } : product
@@ -150,14 +149,14 @@ export const AdminProvider = ({ children }) => {
     toast.success("Product approved and live!");
   };
 
-  // Get Products by Creator
-  const getProductsByCreator = (creatorId) => {
-    return allProducts.filter(product => product.creatorId === creatorId);
-  };
-
   // Get Pending Products
   const getPendingProducts = () => {
     return allProducts.filter(product => product.status === "pending_approval");
+  };
+
+  // Get Products by Creator
+  const getProductsByCreator = (creatorId) => {
+    return allProducts.filter(product => product.creatorId === creatorId);
   };
 
   // Add Order
@@ -171,6 +170,7 @@ export const AdminProvider = ({ children }) => {
     const updated = [...orders, newOrder];
     setOrders(updated);
     localStorage.setItem("orders", JSON.stringify(updated));
+    toast.success("Order placed successfully!");
   };
 
   // Update Order Status
@@ -188,7 +188,7 @@ export const AdminProvider = ({ children }) => {
     const approvedProducts = allProducts.filter(p => p.status === "approved");
     const pendingProducts = allProducts.filter(p => p.status === "pending_approval");
     const activeCreators = creators.filter(c => c.status === "approved");
-    const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
+    const totalRevenue = orders.reduce((sum, order) => sum + (order.total || 0), 0);
     const pendingOrders = orders.filter(o => o.status === "pending").length;
 
     return {
@@ -218,8 +218,8 @@ export const AdminProvider = ({ children }) => {
         updateProduct,
         deleteProduct,
         approveProduct,
-        getProductsByCreator,
         getPendingProducts,
+        getProductsByCreator,
         addOrder,
         updateOrderStatus,
         getStats,
