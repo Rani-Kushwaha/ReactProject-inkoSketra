@@ -13,6 +13,7 @@ import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AdminProducts from "./pages/Admin/AdminProducts";
 import AdminCreators from "./pages/Admin/AdminCreators";
 import AdminOrders from "./pages/Admin/AdminOrders";
+import Wishlist from "./pages/Wishlist";
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
@@ -54,6 +55,7 @@ function App() {
           <Route path="/admin/products" element={<AdminProducts />} />
           <Route path="/admin/creators" element={<AdminCreators />} />
           <Route path="/admin/orders" element={<AdminOrders />} />
+          <Route path="/wishlist" element={<Wishlist onAddToCart={addToCart} />} />
         </Routes>
       </BrowserRouter>
     </AdminProvider>

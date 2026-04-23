@@ -200,9 +200,9 @@ const Customization = () => {
       <div className="bg-gray-900 text-gray-400 text-center py-6 text-sm mt-12">
         <p>© 2025 AnimeStore — Premium Posters Delivered Across India</p>
         <div className="flex justify-center gap-6 mt-3 text-xs">
-          <a href="#" className="hover:text-white transition">Privacy Policy</a>
-          <a href="#" className="hover:text-white transition">Terms of Service</a>
-          <a href="#" className="hover:text-white transition">Contact Us</a>
+          <a href="/privacy" className="hover:text-white transition">Privacy Policy</a>
+          <a href="/terms" className="hover:text-white transition">Terms of Service</a>
+          <a href="/contact" className="hover:text-white transition">Contact Us</a>
         </div>
       </div>
     </div>
