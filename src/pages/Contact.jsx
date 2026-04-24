@@ -33,7 +33,7 @@ const Contact = () => {
             <button onClick={() => navigate("/")} className="text-gray-500 hover:text-red-600 transition">
               Home
             </button>
-            <span className="text-gray-400"></span>
+            <span className="text-gray-400">&gt;</span>
             <span className="text-gray-900 font-semibold">Contact</span>
           </div>
         </div>
@@ -55,7 +55,7 @@ const Contact = () => {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 lg:px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          
+
           {/* Left Side - Contact Form */}
           <div className="bg-white rounded-2xl shadow-lg p-6 lg:p-8">
             <h2 className="text-2xl font-black text-gray-900 mb-2">Send us a Message</h2>
@@ -171,17 +171,32 @@ const Contact = () => {
               <p className="text-gray-500 text-sm mt-2">Online store - Shipping across India</p>
             </div>
 
-            {/* Social Links */}
+            {/* Social Links - FIXED: Added actual links */}
             <div className="bg-white rounded-2xl p-6 shadow-md">
               <h3 className="text-lg font-black text-gray-900 mb-4">Follow Us</h3>
               <div className="flex gap-4">
-                <a href="#" className="w-12 h-12 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center hover:scale-110 transition-transform">
+                <a
+                  href="https://instagram.com/yourstore"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center hover:scale-110 transition-transform"
+                >
                   <span className="text-white text-xl">📷</span>
                 </a>
-                <a href="#" className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl flex items-center justify-center hover:scale-110 transition-transform">
+                <a
+                  href="https://twitter.com/yourstore"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl flex items-center justify-center hover:scale-110 transition-transform"
+                >
                   <span className="text-white text-xl">🐦</span>
                 </a>
-                <a href="#" className="w-12 h-12 bg-gradient-to-br from-red-600 to-orange-600 rounded-xl flex items-center justify-center hover:scale-110 transition-transform">
+                <a
+                  href="https://facebook.com/yourstore"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 bg-gradient-to-br from-red-600 to-orange-600 rounded-xl flex items-center justify-center hover:scale-110 transition-transform"
+                >
                   <span className="text-white text-xl">📘</span>
                 </a>
               </div>
@@ -207,13 +222,19 @@ const Contact = () => {
         </div>
       </div>
 
-      {/* Footer strip matching Home page */}
+      {/* Footer strip - FIXED: Removed href="#" */}
       <div className="bg-gray-900 text-gray-400 text-center py-6 text-sm mt-12">
         <p>© 2025 AnimeStore — Premium Posters Delivered Across India</p>
         <div className="flex justify-center gap-6 mt-3 text-xs">
-          <a href="/privacy" className="hover:text-white transition">Privacy Policy</a>
-          <a href="/terms" className="hover:text-white transition">Terms of Service</a>
-          <a href="/contact" className="hover:text-white transition">Contact Us</a>
+          <button onClick={() => navigate("/privacy")} className="hover:text-white transition">
+            Privacy Policy
+          </button>
+          <button onClick={() => navigate("/terms")} className="hover:text-white transition">
+            Terms of Service
+          </button>
+          <button onClick={() => navigate("/contact")} className="hover:text-white transition">
+            Contact Us
+          </button>
         </div>
       </div>
     </div>

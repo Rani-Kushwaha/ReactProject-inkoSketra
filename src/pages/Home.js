@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 import products from "../services/products";
 
 const categories = [
@@ -23,6 +24,12 @@ const tagColors = {
 function ProductCard({ product, onAddToCart }) {
   const navigate = useNavigate();
   const [added, setAdded] = useState(false);
+  const [isWishlisted, setIsWishlisted] = useState(false);
+
+  useEffect(() => {
+    const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
+    setIsWishlisted(wishlist.some(item => item.id === product.id));
+  }, [product.id]);
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
@@ -31,12 +38,37 @@ function ProductCard({ product, onAddToCart }) {
     setTimeout(() => setAdded(false), 1500);
   };
 
+  const handleWishlist = (e) => {
+    e.stopPropagation();
+    const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
+
+    if (isWishlisted) {
+      const updated = wishlist.filter(item => item.id !== product.id);
+      localStorage.setItem("wishlist", JSON.stringify(updated));
+      setIsWishlisted(false);
+      toast.success("Removed from wishlist");
+    } else {
+      const updated = [...wishlist, product];
+      localStorage.setItem("wishlist", JSON.stringify(updated));
+      setIsWishlisted(true);
+      toast.success("Added to wishlist!");
+    }
+  };
+
   return (
     <div
       onClick={() => navigate(`/product/${product.id}`)}
-      className="group cursor-pointer bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
+      className="group cursor-pointer bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 flex flex-col relative"
     >
-      {/* Image */}
+      <button
+        onClick={handleWishlist}
+        className="absolute top-3 right-3 z-10 w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-md hover:scale-110 transition"
+      >
+        <span className={`text-xl ${isWishlisted ? "text-red-500" : "text-gray-400"}`}>
+          {isWishlisted ? "❤️" : "🤍"}
+        </span>
+      </button>
+
       <div className="relative overflow-hidden bg-gray-100 h-64">
         <img
           src={product.image}
@@ -48,7 +80,6 @@ function ProductCard({ product, onAddToCart }) {
             {product.tag}
           </span>
         )}
-        {/* Quick overlay */}
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300" />
         <div className="absolute bottom-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
           <span className="bg-white text-gray-900 text-xs font-semibold px-4 py-2 rounded-full shadow-lg whitespace-nowrap">
@@ -57,7 +88,6 @@ function ProductCard({ product, onAddToCart }) {
         </div>
       </div>
 
-      {/* Info */}
       <div className="p-4 flex flex-col flex-1">
         <p className="text-xs text-gray-400 uppercase tracking-widest font-semibold mb-1">{product.subcategory}</p>
         <h3 className="font-bold text-gray-900 text-base leading-tight mb-2 flex-1">{product.name}</h3>
@@ -101,6 +131,7 @@ function Home({ onAddToCart }) {
     : products.filter((p) => p.category === activeFilter);
 
   const newArrivals = products.filter((p) => p.tag === "New");
+
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -151,7 +182,6 @@ function Home({ onAddToCart }) {
             </div>
           </div>
 
-          {/* Hero deals */}
           <div className="flex-shrink-0 hidden lg:flex flex-col gap-4">
             {[
               ["⚡ Buy 1", "Get 2 Free"],
@@ -196,7 +226,7 @@ function Home({ onAddToCart }) {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
             {newArrivals.map((p) => (
-              <ProductCard key={p.id} product={p} onAddToCart={onAddToCart || (() => {})} />
+              <ProductCard key={p.id} product={p} onAddToCart={onAddToCart || (() => { })} />
             ))}
           </div>
         </section>
@@ -232,7 +262,6 @@ function Home({ onAddToCart }) {
           <div className="flex-1 h-px bg-gray-200" />
         </div>
 
-        {/* Filter pills */}
         <div className="flex flex-wrap gap-2 mb-8">
           {filters.map((f) => (
             <button
@@ -251,7 +280,7 @@ function Home({ onAddToCart }) {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
           {filtered.map((p) => (
-            <ProductCard key={p.id} product={p} onAddToCart={onAddToCart || (() => {})} />
+            <ProductCard key={p.id} product={p} onAddToCart={onAddToCart || (() => { })} />
           ))}
         </div>
 
@@ -267,9 +296,9 @@ function Home({ onAddToCart }) {
       <div className="bg-gray-900 text-gray-400 text-center py-6 text-sm">
         <p>© 2025 AnimeStore — Premium Posters Delivered Across India</p>
         <div className="flex justify-center gap-6 mt-3 text-xs">
-          <a href="/privacy" className="hover:text-white transition">Privacy Policy</a>
-          <a href="/terms" className="hover:text-white transition">Terms of Service</a>
-          <a href="/contact" className="hover:text-white transition">Contact Us</a>
+          <button onClick={() => navigate("/privacy")} className="hover:text-white transition">Privacy Policy</button>
+          <button onClick={() => navigate("/terms")} className="hover:text-white transition">Terms of Service</button>
+          <button onClick={() => navigate("/contact")} className="hover:text-white transition">Contact Us</button>
         </div>
       </div>
     </div>
